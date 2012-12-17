@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+<words>
+	<word>
+		<letters>hello</letters>
+		<definition>A greeting we say in America</definition>
+	</word>
+	<word>
+		<letters>pooch</letters>
+		<definition>A small dog</definition>		
+	</word>
+	<word>
+		<letters>gashora</letters>
+		<definition>a place in rwanda</definition>
+	</word>
+	<word>
+		<letters>tribe</letters>
+		<definition>a group of people</definition>
+	</word>
+	<word>
+		<letters>equal</letters>
+		<definition>the same as</definition>
+	</word>
+</words>
+</data>
