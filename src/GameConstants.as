@@ -19,13 +19,22 @@ package
 	public static const GIRL_HEIGHT:int = 154; 
 	public static const GHOST_WIDTH:int = 62;
 	public static const GHOST_HEIGHT:int = 80;
+	public static const DARK_WIDTH:int = 850*SCALE;
+	public static const DARK_HEIGHT:int = 850*SCALE;	
 	public static const GHOST_START_DIST:int = Math.sqrt(Math.pow(WORLD_WIDTH,2)+Math.pow(WORLD_HEIGHT,2))/2.8;
+	public static const GIRL_JUMP_Y = 10;
+	
 	public static const DEFINITIONS_ON:Boolean = false;
+	
+	public static var score:Score;
 	
 	
 	private static var WORD_LIST:Array = new Array() ;
 	private static var WORD_LOC:int;
-	private static var WORD_FILE:String = "./be.xml"//"words.xml"
+	private static var WORD_FILE:String = "words.xml"//"./be.xml"
+	
+	
+	
 	
 	//[Embed(source='./words.xml',
     //    mimeType="application/octet-stream")]

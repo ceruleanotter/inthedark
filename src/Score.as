@@ -24,6 +24,13 @@ package
 			
 		}
 		
+		public function getText():String {
+			return _text.text
+		}
+		
+		override public function toString():String {
+			return "Score";
+		}
 		public function ghostKilled():void {
 			_amount += 10;
 			_text.text = _amount.toString();
@@ -39,9 +46,11 @@ package
 			
 			
 			this.x = (GameConstants.WORLD_WIDTH / 2) - this.width/2  
-			this.y = (GameConstants.WORLD_HEIGHT / 2) - this.height/2
+			this.y = (GameConstants.WORLD_HEIGHT / 2) - this.height / 2
+			
 
 			trace("The height is " + _text.height)
+			this.visible = true
 			
 
 		}

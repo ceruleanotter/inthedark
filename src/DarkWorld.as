@@ -19,7 +19,7 @@ package
 		private static var _visibleGhosts:Array;
 		private static var _ghostNum:Number = 4;
 		private static var _ghostInc:Boolean = false;
-		public static var _score:Score;
+		//public static var _score:Score;
 		public static var _timePlayed:Number;
 		public function DarkWorld()
 		{
@@ -33,10 +33,6 @@ package
 			
 
 			
-			for (var i:int = 1; i <= _ghostNum; i++) {
-				add(new Ghost(this));
-			}
-			
 			add(new KeyChecker(this));
 			DarkWorld._curGhosts = new Array();
 			DarkWorld._curLetterPos = 0;
@@ -44,8 +40,17 @@ package
 			_darkness = new Darkness;
 			add(_darkness);
 			_visibleGhosts = [];
-			_score = new Score;
-			add(_score);
+			
+			
+			
+			for (var i:int = 1; i <= _ghostNum; i++) {
+				add(new Ghost(this));
+			} //this needs to be after darkness for collision purposes
+			
+			
+			GameConstants.score = new Score;
+			add(GameConstants.score)
+			
 		}
 		
 		
@@ -62,6 +67,7 @@ package
 		
 		
 		override public function update():void {
+			
 			super.update();
 			var ghosts:Array = [];
 			FP.world.getClass(Ghost, ghosts);

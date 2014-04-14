@@ -81,8 +81,9 @@ package
 			type = "ghost";
 			
 			//gets the correct image
-			_hidden = true;
-			this.unhide();
+			_hidden = false;
+			this.hide();
+
 			
 		}
 		
@@ -134,6 +135,7 @@ package
 			_angle = Math.atan2(_ydiff, _xdiff)
 			var distance:Number = Math.sqrt(Math.pow(_xdiff, 2) + Math.pow(_ydiff, 2))
 			
+			if (!_hidden) FP.world.sendToBack(this); // deal with problem of ghosts created on screen being above light, even though they were send back
 			if (distance < 5) {
 				return;
 			}
@@ -222,7 +224,7 @@ package
 		public function die():void {
 			//could start an animation
 
-			DarkWorld._score.ghostKilled();
+			GameConstants.score.ghostKilled();
 			this.animDeath();
 	
 		}
@@ -247,8 +249,11 @@ package
 		}
 		
 		public function definitionLose():void {
-			FP.world.removeAll()
-			FP.world = new InfoScreen(DarkWorld._score);
+			//FP.world.removeAll()
+			_darkWorld.removeAll()
+			FP.world = new InfoScreen();
+			//_darkWorld.removeAll()
+
 		}
 	}
 }

@@ -1,18 +1,18 @@
 package
 {
 	import net.flashpunk.Entity;
+	import net.flashpunk.graphics.Graphiclist;
 	import net.flashpunk.masks.Pixelmask;
 	import net.flashpunk.FP;
 	import net.flashpunk.Tween;
+	import net.flashpunk.tweens.misc.AngleTween;
 	public class Darkness extends Entity
 	{
 		import net.flashpunk.utils.Input;
 		import net.flashpunk.utils.Key;
 		import net.flashpunk.graphics.Image;
-		[Embed(source = 'assets/dark_up.png')] private const DARK_UP:Class;
-		[Embed(source = 'assets/dark_left.png')] private const DARK_LEFT:Class;
-		[Embed(source = 'assets/dark_right.png')] private const DARK_RIGHT:Class;
-		[Embed(source = 'assets/dark_down.png')] private const DARK_DOWN:Class;
+		[Embed(source = 'assets/dark_large.png')] private const DARK:Class;
+		[Embed(source = 'assets/light_large.png')] private const LIGHT:Class;
 		
 		[Embed(source = 'assets/dark_mask_up_113.png')] private const MASK_UP:Class;
 		[Embed(source = 'assets/dark_mask_left_113.png')] private const MASK_LEFT:Class;
@@ -25,68 +25,87 @@ package
 		private static var _mask_right:Pixelmask;
 		
 		
-		private static var _dark_up:Image;
-		private static var _dark_down:Image;
-		private static var _dark_left:Image;
-		private static var _dark_right:Image;
-
-		//private static _mask_up = new Pixelmask(MASK_UP);
+		private static var _dark:Image;
+		private static var _light:Image;
+		private static var _totalDark:Graphiclist;
 		
+		private var _tween:AngleTween;
 		public function Darkness()
 		{
 			
-			MASK_RIGHT.prototype
+			
 			_mask_up = new Pixelmask(MASK_UP);
 			_mask_down = new Pixelmask(MASK_DOWN);
 			_mask_left = new Pixelmask(MASK_LEFT);
 			_mask_right = new Pixelmask(MASK_RIGHT);
 			
-			_dark_up = new Image(DARK_UP);
-			_dark_down = new Image(DARK_DOWN);
-			_dark_left = new Image(DARK_LEFT);
-			_dark_right = new Image(DARK_RIGHT);
+			_dark = new Image(DARK)
+			_light = new Image(LIGHT)
+			_dark.scale = GameConstants.SCALE
+			_light.scale = GameConstants.SCALE
+			
+			_light.centerOO()
+			_dark.centerOO()
+			_light.x = GameConstants.WORLD_WIDTH/ 2
+			_light.y = GameConstants.WORLD_HEIGHT/ 2
+			_dark.x = GameConstants.WORLD_WIDTH / 2
+			_dark.y = GameConstants.WORLD_HEIGHT/2
+			_light.alpha = 0.5
 			
 			
-			_dark_up.scale = GameConstants.SCALE
-			_dark_down.scale = GameConstants.SCALE
-			_dark_left.scale = GameConstants.SCALE
-			_dark_right.scale = GameConstants.SCALE
-			
-			
-			_mask_down.height *= GameConstants.SCALE 
-			_mask_right.height *= GameConstants.SCALE 
-			_mask_left.height *= GameConstants.SCALE 
-			_mask_up.height *= GameConstants.SCALE 
-			
-			_mask_down.width *= GameConstants.SCALE 
-			_mask_right.width *= GameConstants.SCALE 
-			_mask_left.width *= GameConstants.SCALE 
-			_mask_up.width *= GameConstants.SCALE 
-			trace("the data is " + _mask_down)
+			_totalDark = new Graphiclist()
+			_totalDark.add(_dark)
+			_totalDark.add(_light)
+			_tween = null
 
-			graphic = _dark_down;
+
+
+			graphic = _totalDark
 			this.mask = _mask_down;
 			type = "darkness";
 		}
 		
+		private function finishTween():void {
+			_tween = null
+		}
+		
 		override public function update():void {
+				var angleRot:Number = -1
 				if (Input.pressed(Key.DOWN)) {
-					graphic = _dark_down;
 					this.mask = _mask_down;
-					
+					angleRot = 0
 				} else if (Input.pressed(Key.UP)) {
-					graphic = _dark_up;
 					this.mask = _mask_up;
-					
+					angleRot = 180 
 				} else if (Input.pressed(Key.LEFT)) {
-					graphic = _dark_left;
 					this.mask = _mask_left;
-					
+					angleRot = 270					
 				} else if (Input.pressed(Key.RIGHT)) {
-					graphic = _dark_right;
 					this.mask = _mask_right;
+					angleRot = 90					
 				}
-
+				
+				
+				//trace("light angle " + _light.angle)
+				
+				if (angleRot > -1) {
+					trace("angle is " + angleRot);
+					trace("darkness turning");
+					
+					//for each (var picpart:Image in _totalDark.children) {
+						//picpart.angle = angleRot;
+					_tween = new AngleTween(finishTween) // am I doing this correctly?
+					_tween.tween(_light.angle, angleRot, 0.15)
+					
+					//}
+				}
+				
+				if (_tween != null) {
+					_tween.update()
+					for each (var picpart:Image in _totalDark.children)	picpart.angle = _tween.angle
+				}
+				
+					
 				//need to check what ghosts collide
 				var allghosts:Array = [];
 				FP.world.getClass(Ghost, allghosts);

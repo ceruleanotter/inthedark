@@ -1,0 +1,24 @@
+No score on definition lose
+	need to look this one up; it's not getting removed from dark world and added to definition screen. going through breakpoints might help but need an internet connection to see how to do that
+
+//ghosts, if you're looking, appear white?
+
+girl doesn't have turned back
+
+
+beyond
+
+powerups
+	whole screen visible
+	kill everything in a sunbeam
+	kill everything on the screen
+
+defintions better rules
+
+different enemy types
+double kill, proximity bonus
+
+map
+
+cut scenes
+

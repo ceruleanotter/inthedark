@@ -1,6 +1,9 @@
 package
 {
 	import net.flashpunk.Entity;
+	import net.flashpunk.Tween;
+	import net.flashpunk.tweens.motion.LinearMotion;
+	import net.flashpunk.tweens.motion.LinearPath;
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;	
 	public class Girl extends Entity
@@ -15,6 +18,8 @@ package
 		private static var _girl_left:Image;
 		private static var _girl_right:Image;
 
+		private var _switch_to:Image;
+		private var _jump:LinearPath;
 		public function Girl()
 		{
 			
@@ -30,29 +35,50 @@ package
 			setHitbox(GameConstants.GIRL_WIDTH*.7, GameConstants.GIRL_HEIGHT*.9);
 			setOrigin(GameConstants.GIRL_WIDTH*.7 / 2, GameConstants.GIRL_HEIGHT*.9 / 2);
 			type = "girl";
+			
+			_switch_to = null
 		}
 		
 		
 		override public function update():void {
-			if(Input.pressed(Key.ANY)) {
+			if (Input.pressed(Key.ANY)) {
+				var jump:LinearPath = null
 				if (Input.pressed(Key.DOWN)) {
-					graphic = _girl_forward;
+					jump = LinearPath(this.addTween(new LinearPath()))
+					_switch_to = _girl_forward
 					
 				} else if (Input.pressed(Key.UP)) {
-					graphic = _girl_back;
-
+					jump = LinearPath(this.addTween((new LinearPath())))					
+					_switch_to = _girl_back;
 					
 				} else if (Input.pressed(Key.LEFT)) {
-					graphic = _girl_left;
+					jump = LinearPath(this.addTween((new LinearPath())))
+					_switch_to = _girl_left;
 
 					
 				} else if (Input.pressed(Key.RIGHT)) {
-					graphic = _girl_right;
+					jump = LinearPath(this.addTween((new LinearPath())))
+					_switch_to = _girl_right;
 				}
-				graphic.x = -GameConstants.GIRL_WIDTH / 2;
-				graphic.y = -GameConstants.GIRL_HEIGHT / 2;
+				if (jump != null) {
+					jump.addPoint(-GameConstants.GIRL_WIDTH / 2,(-GameConstants.GIRL_HEIGHT / 2)-GameConstants.GIRL_JUMP_Y)
+					jump.addPoint(-GameConstants.GIRL_WIDTH / 2,(-GameConstants.GIRL_HEIGHT / 2))
+					jump.object = this.graphic
+					jump.setMotion(0.3)
+					_jump = jump
+				
+				}
 			}
+			this.updateTweens()
+			if(_jump != null && _jump.percent > 0.5) switchGraphic()
 		}
+		
+		private function switchGraphic():void {
+			graphic = _switch_to
+			graphic.x = -GameConstants.GIRL_WIDTH / 2;
+			graphic.y = -GameConstants.GIRL_HEIGHT / 2;			
+		}
+		
 		
 	}
 }

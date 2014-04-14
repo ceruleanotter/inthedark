@@ -88,7 +88,9 @@ package
 					
 				} else {
 					trace("wrong!");
+					//this.removeAll()
 					_calledGhost.definitionLose();
+					
 				}
 			}
 			
